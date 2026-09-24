@@ -33,7 +33,7 @@ count=0
 while True:
     net.active(True)
     net.connect(ssid,password)
-    max_cd = 2
+    max_cd = 8
     while max_cd >0:
         status = net.status()
         print(status_text[status])
@@ -47,13 +47,13 @@ while True:
         print(f"Connected to {ssid} successfully!")
         count=0
         options()
-        time.sleep(5)
+        time.sleep(120)
         while True:
             connected = net.isconnected() #check connection again
             if connected == True:
                 signal = net.status("rssi") #Received Signal Strength Indicator
                 print(f"Connection secure at {signal} dBm signal strength") #
-                time.sleep(5)
+                time.sleep(120)
             else:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
                 net.disconnect() #disconnect cleanly before reconnecting
@@ -66,7 +66,7 @@ while True:
     else:
         print(f"Error connecting to {ssid}")
         count=count+1
-        time.sleep(1)
+        time.sleep(60)
         print(f"Attempt #{count} at reconnection to {ssid}")
         net.disconnect() #disconnect cleanly before reconnecting
         continue
