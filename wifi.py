@@ -42,11 +42,9 @@ if connected == True:
     print(f"MAC Address: {mac_string}")
     x = str(input("Press Enter to stop the program: ")).strip().lower()
     net.disconnect()
+    print(f"Disconnected from {ssid}")
 else:
     print(f"Error connecting to {ssid}")
+    time.sleep(1)
     net.disconnect()
-
-#while True:
-#    signal = net.status("rssi") #strength signal
-#    print(signal)
-#    time.sleep(3)
+    print(f"Disconnected from {ssid}")
