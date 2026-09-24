@@ -12,25 +12,12 @@ status_text = {
     3 : "CYW43_LINK_UP"
     }
 net = network.WLAN(network.STA_IF) # interface to connect to a station
-net.active(True)
-net.connect(ssid,password)
-max_cd = 15
-while max_cd >0:
-    status = net.status()
-    print(status_text[status])
-    connected = net.isconnected()
-    if connected==True:
-        break
-    else:
-        time.sleep(1)
-        max_cd = max_cd - 1
-if connected == True:
-    print(f"Connected to {ssid} successfully!")
+def options():
     ip,subnet,gateway,dns = net.ifconfig()
     print(f"IP: {ip}\n"
-          f"Subnet Mask: {subnet}\n"
-          f"Default Gateway: {gateway}\n"
-          f"DNS Configuration: {dns}\n")
+        f"Subnet Mask: {subnet}\n"
+        f"Default Gateway: {gateway}\n"
+        f"DNS Configuration: {dns}\n")
     channel_id = net.config("channel")
     print(f"Channel ID: {channel_id}")
     mac_bytes = net.config("mac")
@@ -40,11 +27,44 @@ if connected == True:
         mac_string = mac_string + mac[i:i+2]+":"
     mac_string = mac_string[:len(mac_string)-1]
     print(f"MAC Address: {mac_string}")
-    x = str(input("Press Enter to stop the program: ")).strip().lower()
-    net.disconnect()
-    print(f"Disconnected from {ssid}")
-else:
-    print(f"Error connecting to {ssid}")
-    time.sleep(1)
-    net.disconnect()
-    print(f"Disconnected from {ssid}")
+
+
+count=0
+while True:
+    net.active(True)
+    net.connect(ssid,password)
+    max_cd = 2
+    while max_cd >0:
+        status = net.status()
+        print(status_text[status])
+        connected = net.isconnected()
+        if connected==True:
+            break
+        else:
+            time.sleep(1)
+            max_cd = max_cd - 1
+    if connected == True:
+        print(f"Connected to {ssid} successfully!")
+        count=0
+        options()
+        time.sleep(5)
+        while True:
+            connected = net.isconnected() #check connection again
+            if connected == True:
+                signal = net.status("rssi") #Received Signal Strength Indicator
+                print(f"Connection secure at {signal} dBm signal strength") #
+                time.sleep(5)
+            else:
+                print(f"Lost connection to {ssid}, attempting reconnect...")
+                break
+    elif connected == False and count >=3:
+        print(f"Error connecting to {ssid}")
+        print(f"Multiple failed attempts of reconnection to {ssid}, disconnecting permanently.")
+        break
+    else:
+        print(f"Error connecting to {ssid}")
+        count=count+1
+        time.sleep(1)
+        print(f"Attempt #{count} at reconnection to {ssid}")
+        continue
+
