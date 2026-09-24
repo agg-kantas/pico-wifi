@@ -25,7 +25,7 @@ def options():
     mac_string = ""
     for i in range(0,len(mac),2):
         mac_string = mac_string + mac[i:i+2]+":"
-    mac_string = mac_string[:len(mac_string)-1]
+    mac_string = mac_string[:-1]
     print(f"MAC Address: {mac_string}")
 
 
@@ -58,15 +58,16 @@ while True:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
                 net.disconnect() #disconnect cleanly before reconnecting
                 break
-    elif connected == False and count >=3:
+    elif connected == False and count >=10:
         print(f"Error connecting to {ssid}")
         print(f"Multiple failed attempts of reconnection to {ssid}, disconnecting permanently.")
         net.disconnect()
         break
     else:
-        print(f"Error connecting to {ssid}")
+        print(f"Error connecting to {ssid}, will retry in 60 seconds")
         count=count+1
         time.sleep(60)
         print(f"Attempt #{count} at reconnection to {ssid}")
         net.disconnect() #disconnect cleanly before reconnecting
         continue
+
