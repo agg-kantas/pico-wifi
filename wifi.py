@@ -56,15 +56,17 @@ while True:
                 time.sleep(5)
             else:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
+                net.disconnect() #disconnect cleanly before reconnecting
                 break
     elif connected == False and count >=3:
         print(f"Error connecting to {ssid}")
         print(f"Multiple failed attempts of reconnection to {ssid}, disconnecting permanently.")
+        net.disconnect()
         break
     else:
         print(f"Error connecting to {ssid}")
         count=count+1
         time.sleep(1)
         print(f"Attempt #{count} at reconnection to {ssid}")
+        net.disconnect() #disconnect cleanly before reconnecting
         continue
-
