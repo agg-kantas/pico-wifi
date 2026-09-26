@@ -1,7 +1,8 @@
 import machine
 import time
 import network
-from wificonfig import ssid, password
+from wificonfig import ssid, password, host
+import socket
 status_text = {
     -3 : "CYW43_LINK_BADAUTH",
     -2 : "CYW43_LINK_NONET",
@@ -47,13 +48,21 @@ while True:
         print(f"Connected to {ssid} successfully!")
         count=0
         options()
-        time.sleep(120)
+        port = 8080
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
+        try:
+            s.connect((host,port))
+            s.send("Data sent successfully")
+        except OSError as e:
+            print(f"Socket Error: {e}")
+
+        time.sleep(100)
         while True:
             connected = net.isconnected() #check connection again
             if connected == True:
                 signal = net.status("rssi") #Received Signal Strength Indicator
                 print(f"Connection secure at {signal} dBm signal strength") #
-                time.sleep(120)
+                time.sleep(100)
             else:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
                 net.disconnect() #disconnect cleanly before reconnecting
@@ -66,8 +75,9 @@ while True:
     else:
         print(f"Error connecting to {ssid}, will retry in 60 seconds")
         count=count+1
-        time.sleep(60)
+        time.sleep(1)
         print(f"Attempt #{count} at reconnection to {ssid}")
         net.disconnect() #disconnect cleanly before reconnecting
         continue
+
 
