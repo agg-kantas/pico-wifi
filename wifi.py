@@ -65,8 +65,10 @@ while True:
             s.send("Connection made successfully!\n")
             json_string = json.dumps(data)
             s.send(json_string)
+            s.close()
         except OSError as e:
             print(f"Socket Error: {e}")
+            s.close()
         time.sleep(120)
         while True:
             connected = net.isconnected() #check connection again
