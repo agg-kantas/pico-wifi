@@ -62,10 +62,11 @@ while True:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
         try:
             s.connect((host,port))
-            s.send("Data sent successfully")
+            s.send("Connection made successfully!\n")
+            json_string = json.dumps(data)
+            s.send(json_string)
         except OSError as e:
             print(f"Socket Error: {e}")
-
         time.sleep(120)
         while True:
             connected = net.isconnected() #check connection again
