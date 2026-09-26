@@ -7,6 +7,10 @@ s.bind(("",8080)) # "" IP address just means the receiver accepts any network in
 s.listen(5)
 while True:
     connection, client_address = s.accept()
-    print(connection,client_address)
+    data = connection.recv(1024)
+    data.decode('utf-8')
+    data = json.loads(data)
+    print(data)
+    s.close()
 
 
