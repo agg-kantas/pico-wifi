@@ -8,9 +8,8 @@ s.listen(5)
 while True:
     connection, client_address = s.accept()
     data = connection.recv(1024)
-    data.decode('utf-8')
     data = json.loads(data)
     print(data)
-    s.close()
+s.close()
 
 

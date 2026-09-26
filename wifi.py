@@ -62,7 +62,7 @@ while True:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
         try:
             s.connect((host,port))
-            s.send("Connection made successfully!\n")
+            print("Connection made successfully!")
             json_string = json.dumps(data)
             s.send(json_string)
             s.close()
@@ -92,5 +92,3 @@ while True:
         print(f"Attempt #{count} at reconnection to {ssid}")
         net.disconnect() #disconnect cleanly before reconnecting
         continue
-
-
