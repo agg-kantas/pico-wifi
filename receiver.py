@@ -9,7 +9,8 @@ while True:
     connection, client_address = s.accept()
     data = connection.recv(1024)
     data = json.loads(data)
-    print(data)
+    with open ("wifi_logs.jsonl","a") as f:
+        f.write(json.dumps(data) + "\n")
 s.close()
 
 
