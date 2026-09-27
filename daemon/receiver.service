@@ -1,5 +1,7 @@
 [Unit]
 Description=Python Daemon that creates a listening socket which receives information from a raspberry pico and stores it in JSONL format
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
