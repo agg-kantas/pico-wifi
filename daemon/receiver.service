@@ -1,1 +1,12 @@
+[Unit]
+Description=Python Daemon that creates a listening socket which receives information from a raspberry pico and stores it in JSONL format
 
+[Service]
+Type=simple
+WorkingDirectory= /home/owner/Desktop/Projects/pico-wifi/daemon
+ExecStart=/usr/bin/python3 /home/owner/Desktop/Projects/pico-wifi/daemon/receiver.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
