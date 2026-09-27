@@ -70,7 +70,7 @@ while True:
         except OSError as e:
             print(f"Socket Error: {e}")
             s.close()
-        time.sleep(10)
+        time.sleep(120)
         while True:
             connected = net.isconnected() #check connection again
             if connected == True:
@@ -88,7 +88,7 @@ while True:
                 except OSError as e:
                     print(f"Socket Error: {e}")
                     s.close()
-                time.sleep(10)
+                time.sleep(120)
             else:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
                 net.disconnect() #disconnect cleanly before reconnecting

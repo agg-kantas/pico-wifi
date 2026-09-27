@@ -7,10 +7,13 @@ s.bind(("",8080)) # "" IP address just means the receiver accepts any network in
 s.listen(5)
 while True:
     connection, client_address = s.accept()
-    data = connection.recv(1024)
-    data = json.loads(data)
-    with open ("wifi_logs.jsonl","a") as f:
-        f.write(json.dumps(data) + "\n")
+    try:
+        data = connection.recv(1024)
+        data = json.loads(data)
+        with open ("wifi_logs.jsonl","a") as f:
+            f.write(json.dumps(data) + "\n")
+    except OSError as e:
+        print(f"Socket Error: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
 s.close()
-
-
