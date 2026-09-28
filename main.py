@@ -24,7 +24,9 @@ def get_data():
     for i in range(0,len(mac),2):
         mac_string = mac_string + mac[i:i+2]+":"
     mac_string = mac_string[:-1]
+    time_string = get_time()
     data = {
+        "time":time_string,
         "ip":ip,
         "subnet":subnet,
         "gateway":gateway,
@@ -38,7 +40,7 @@ def connect_socket(data):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
     try:
         s.connect((host,port))
-        print("Connection made successfully!")
+        print("Socket connection made successfully!")
         json_string = json.dumps(data)
         s.send(json_string)
         time.sleep(1)
@@ -46,7 +48,11 @@ def connect_socket(data):
     except OSError as e:
         print(f"Socket Error: {e}")
         s.close()
-    time.sleep(120)
+
+def get_time():
+    t = time.gmtime()
+    time_string = (f"{t[0]}-{t[1]:02d}-{t[2]:02d} {t[3]:02d}:{t[4]:02d}:{t[5]:02d}") #converts time in seconds to a string timestamp with zeros padding
+    return time_string
 
 port=8080
 count=0
@@ -67,20 +73,29 @@ while True:
         print(f"Connected to {ssid} successfully!")
         count=0
         data = get_data()
-        print(f"IP: {data["ip"]}\n"
+        print(f"Time: {data["time"]}\n"
+        f"IP: {data["ip"]}\n"
         f"Subnet Mask: {data["subnet"]}\n"
         f"Default Gateway: {data["gateway"]}\n"
         f"DNS Configuration: {data["dns"]}\n"
         f"Channel ID: {data["channel_id"]}\n"
         f"MAC Address: {data["mac"]}\n")
+        time.sleep(1)
         connect_socket(data)
+        time.sleep(120)
         while True:
             connected = net.isconnected() #check connection again
             if connected == True:
                 signal = net.status("rssi") #Received Signal Strength Indicator
+                time_string = get_time()
+                print(f"Time: {time_string}")
                 print(f"Connection secure at {signal} dBm signal strength")
-                rssi_data = {"rssi":signal}
+                rssi_data = {
+                            "time":time_string,
+                            "rssi":signal
+                             }
                 connect_socket(rssi_data)
+                time.sleep(120)
             else:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
                 net.disconnect() #disconnect cleanly before reconnecting
