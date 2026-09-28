@@ -16,4 +16,6 @@ while True:
         print(f"Socket Error: {e}")
     except Exception as e:
         print(f"Error: {e}")
+    finally:
+        connection.close()
 s.close()

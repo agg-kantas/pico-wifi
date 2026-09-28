@@ -34,6 +34,20 @@ def get_data():
         }
     return data
 
+def connect_socket(data):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
+    try:
+        s.connect((host,port))
+        print("Connection made successfully!")
+        json_string = json.dumps(data)
+        s.send(json_string)
+        time.sleep(1)
+        s.close()
+    except OSError as e:
+        print(f"Socket Error: {e}")
+        s.close()
+    time.sleep(120)
+
 port=8080
 count=0
 while True:
@@ -59,36 +73,14 @@ while True:
         f"DNS Configuration: {data["dns"]}\n"
         f"Channel ID: {data["channel_id"]}\n"
         f"MAC Address: {data["mac"]}\n")
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
-        try:
-            s.connect((host,port))
-            print("Connection made successfully!")
-            json_string = json.dumps(data)
-            s.send(json_string)
-            time.sleep(5)
-            s.close()
-        except OSError as e:
-            print(f"Socket Error: {e}")
-            s.close()
-        time.sleep(120)
+        connect_socket(data)
         while True:
             connected = net.isconnected() #check connection again
             if connected == True:
                 signal = net.status("rssi") #Received Signal Strength Indicator
                 print(f"Connection secure at {signal} dBm signal strength")
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creates an IPv4 TCP protocol socket
-                try:
-                    s.connect((host,port))
-                    print("Connection made successfully!")
-                    rssi_data = {"rssi":signal}
-                    json_string = json.dumps(rssi_data)
-                    s.send(json_string)
-                    time.sleep(5)
-                    s.close()
-                except OSError as e:
-                    print(f"Socket Error: {e}")
-                    s.close()
-                time.sleep(120)
+                rssi_data = {"rssi":signal}
+                connect_socket(rssi_data)
             else:
                 print(f"Lost connection to {ssid}, attempting reconnect...")
                 net.disconnect() #disconnect cleanly before reconnecting
@@ -105,3 +97,4 @@ while True:
         print(f"Attempt #{count} at reconnection to {ssid}")
         net.disconnect() #disconnect cleanly before reconnecting
         continue
+
