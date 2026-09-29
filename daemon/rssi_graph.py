@@ -10,8 +10,8 @@ with open("wifi_logs.jsonl","r") as f:
             dates = datetime.strptime(df["time"], "%Y-%m-%d %H:%M:%S")
             time.append(dates)
             strength.append(df["rssi"])
-
-plt.plot(time,strength, marker="o", linestyle="-")
+print(time)
+plt.plot(time,strength, marker="o")
 plt.ylabel("Signal Strength")
 plt.xlabel("Time")
 plt.title("RSSI Over Time")
