@@ -44,5 +44,22 @@ Rename `wificonfig-example.py` to `wificonfig.py` and fill in your own values:
 ```bash
 git clone https://github.com/agg-kantas/pico-wifi.git
 cd pico-wifi
-sudo apt install python3-matplotlib
+```
+
+### 3. Run the receiver as a systemd service
+```bash
+sudo cp daemon/receiver.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable receiver.service
+sudo systemctl start receiver.service
+```
+Check the status of the daemon:
+```bash
+sudo systemctl status receiver.service
+```
+> Logs are written to `daemon/wifi_logs.jsonl`
+### 4. Visualize the data
+```bash
+cd daemon
+python3 plot_rssi.py
 ```
