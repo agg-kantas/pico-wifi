@@ -63,3 +63,17 @@ sudo systemctl status receiver.service
 cd daemon
 python3 plot_rssi.py
 ```
+## What I learned
+
+### Wifi/Networking Fundamentals
+- Managing a WiFi connection with Micropython's `network` module, including exception handling and failure states
+- Practical distinction between the Link/network layers and the transport layer
+- Client-Server TCP communication from both sides: `connect()` on the client side, `bind()`/`listen()`/`accept()` on the server
+- Real-world socket errors and what they actually mean (ECONNRESET, EBADF, address-already-in-use) rather than just copying fixes
+
+### Python
+
+- JSON serialization (dumps/loads) for structured data over a network
+- JSONL as a log format compared to a single JSON file for data that grows over time
+- Exception handling for unreliable network conditions
+- Basic data visualization with matplotlib (fig/ax, styling, datetime x-axes)
