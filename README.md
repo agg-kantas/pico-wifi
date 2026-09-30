@@ -1,6 +1,6 @@
 # Pico WiFi Manager
 
-A MicroPython script for the Raspberry Pi Pico 2W that connects to WiFi, automatically retries on failure with exception handling, and contiguously reports connection status and signal strength (RSSI) to a Python daemon running on another machine over TCP socket. The daemon then logs the data in JSONL format, which can then be visualized with matplotlib.
+A MicroPython script for the Raspberry Pi Pico 2W that connects to WiFi, automatically retries on failure with exception handling, and continuously reports connection status and signal strength (RSSI) to a Python daemon running on another machine over TCP socket. The daemon then logs the data in JSONL format, which can then be visualized with matplotlib.
 
 ## What it does
 
