@@ -48,7 +48,9 @@ cd pico-wifi
 
 ### 3. Run the receiver as a systemd service
 ```bash
-sudo cp daemon/receiver.service /etc/systemd/system/
+cd daemon
+chmod +x receiver.py
+sudo cp receiver.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable receiver.service
 sudo systemctl start receiver.service
